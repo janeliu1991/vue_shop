@@ -7,9 +7,9 @@
                 <img src="../assets/logo.png" alt="">
             </div>
             <!-- 登录表单 -->
-            <!-- 为el-form进行属性绑定 -->
+            <!-- model为el-form进行属性绑定,是表单数据对象，ref是为form创建一个表单引用，ref的值就是form的实例对象 -->
             <el-form  ref="LoginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
-                <!-- 用户名 -->
+                <!-- 用户名 prop，传入form组件中的model中的字段-->
                 <el-form-item prop="username">
                     <!-- 为用户名和密码动态绑定数据 -->
                     <el-input prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
@@ -21,7 +21,7 @@
                 <!-- 按钮 -->
                 <el-form-item class="btns">
                     <el-button type="primary">登录</el-button>
-                    <el-button type="info">重置</el-button>
+                    <el-button type="info" @click="resetLoginForm">重置</el-button>
                 </el-form-item> 
             </el-form>
         </div>
@@ -32,8 +32,8 @@
         data() {
             return {
                 loginForm: {
-                    username: '',
-                    password: ''
+                    username: 'admin',
+                    password: '123'
                 },
                 loginFormRules: {
                     username: [{
@@ -58,6 +58,14 @@
                     }]
                 }
             }
+        },
+        methods: {
+            resetLoginForm() {
+                //this代表的是这个Login组件
+                console.log(this);
+                //this.refs.LoginFormRef指向这个组件的引用对应到的form实例对象，resetFields()对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
+                this.$refs.LoginFormRef.resetFields()
+            },
         }
     }
 </script>
