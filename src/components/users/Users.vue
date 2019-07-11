@@ -48,7 +48,7 @@
               @click="deleteUser(scope.row.id)"
             ></el-button>
             <el-tooltip class="item" effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="showAlotRoleDialog(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -113,6 +113,28 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
+
+<!-- 弹出分配角色的对话框 -->
+    <el-dialog title="分配角色" :visible.sync="alotRoleDialogVisible" width="50%">
+      <!-- 主体内容区域 -->
+      <!-- rules属性传入验证规则，prop属性设置为需要校验的字段名，model绑定是表单数据对象 -->
+        <!-- 弹窗主体 -->
+            <p>用户名：{{userInfo.username}}</p>
+            <p>当前角色：{{userInfo.role_name}}</p>
+            <p>分配新角色：
+              <el-select v-model="selectId" placeholder="请选择">
+      <el-option v-for="item in roleList"  :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+    </el-select>
+            </p>
+
+      <!-- 底部按钮区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="alotRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="alotRole">确 定</el-button>
+      </span>
+    </el-dialog>
+
+
   </div>
 </template>
 <script>
@@ -179,7 +201,12 @@ export default {
           { required: true, message: '请输入电话号码', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
-      }
+      },
+      alotRoleDialogVisible:false,
+      userInfo:{},
+      //所有角色的列表
+      roleList:[],
+      selectId:''
     }
   },
   created() {
@@ -192,7 +219,7 @@ export default {
       const { data: res } = await this.$http.get('users', {
         params: this.queryInfo
       })
-        console.log(res)
+        
       if (res.meta.status != 200)
         return this.$message.console.error(res.meta.msg)
       //将用户数据赋值给用户列表数组
@@ -220,7 +247,6 @@ export default {
       const { data: res } = await this.$http.put(
         'users/' + uid + '/state/' + type
       )
-      console.log(res)
       if (res.meta.status != 200) {
         //如果状态没有更新成功，要把状态在更改回去
         userinfo.mg_state = !userinfo.mg_stat
@@ -306,7 +332,34 @@ export default {
       }
       this.$message.success('删除用户成功')
       this.getUserList()
+    },
+
+  //展示分配权限的对话框
+    async showAlotRoleDialog(row){
+    this.userInfo=row
+    const {data:res}=await this.$http.get('roles')
+    if(res.meta.status!=200) {
+      return this.$message.error("获取角色列表失败")
     }
+    this.roleList=res.data
+    this.alotRoleDialogVisible=true
+    
+    },
+
+    //分配权限
+    async alotRole(){
+      if(!this.selectId) {
+        return this.$message.error('请选择角色')
+      }
+     const {data:res}=await this.$http.put(`users/${this.userInfo.id}/role`,{rid:this.selectId})
+     if(res.meta.status!=200){
+       return this.$message.error("分配权限失败")
+     }
+     this.$message.success("分配权限成功")
+     this.getUserList()
+     this.alotRoleDialogVisible=false
+
+    },
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Input, Message, Container, Header, Footer, Main, Aside, Menu, MenuItem, Submenu, MenuItemGroup, Card, BreadcrumbItem, Col, Row, Breadcrumb, Table, TableColumn, Tooltip, Switch, Pagination, Dialog, MessageBox, Tag } from 'element-ui'
+import { Button, Form, FormItem, Input, Message, Container, Header, Footer, Main, Aside, Menu, MenuItem, Submenu, MenuItemGroup, Card, BreadcrumbItem, Col, Row, Breadcrumb, Table, TableColumn, Tooltip, Switch, Pagination, Dialog, MessageBox, Tag, Tree, Select, Option } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Form)
@@ -26,6 +26,9 @@ Vue.use(Switch)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
 
 //需要将message挂载到Vue原型对象中，这样，所有的vue实例都能通过this.$message访问到
 Vue.prototype.$message = Message

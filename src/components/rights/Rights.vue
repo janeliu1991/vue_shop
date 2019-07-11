@@ -37,7 +37,6 @@ export default {
   methods: {
     async getRightsList() {
       const { data: res } = await this.$http.get('rights/list')
-      console.log(res.data)
       this.rightsList = res.data
     }
   }

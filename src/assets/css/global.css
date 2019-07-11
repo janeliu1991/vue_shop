@@ -43,3 +43,8 @@ body,
 body .el-table th.gutter {
     display: table-cell!important;
 }
+
+.vcenter {
+    display: flex;
+    align-items: center;
+}
