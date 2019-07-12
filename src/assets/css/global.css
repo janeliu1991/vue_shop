@@ -48,3 +48,8 @@ body .el-table th.gutter {
     display: flex;
     align-items: center;
 }
+
+.cascade .el-cascader-menu__wrap {
+    height: 300px;
+    overflow-y: scroll;
+}
