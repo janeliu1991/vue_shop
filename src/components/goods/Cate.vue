@@ -162,6 +162,7 @@ export default {
         //value:指定选项的值为选项对象的某个属性值
         // lable:指定看到的内容为选项对象的某个属性值
         // children:指定选项的子选项为选项对象的某个属性值
+        //checkStrictly,控制是否可以值选择一个节点
         value: 'cat_id',
         label: 'cat_name',
         children: 'children',
@@ -188,7 +189,7 @@ export default {
         params: this.queryInfo
       })
       if (res.meta.status != 200) {
-        return this.$message.error('获取分类成功')
+        return this.$message.error('获取分类失败')
       }
       this.categoryList = res.data.result
       this.total = res.data.total
@@ -205,6 +206,8 @@ export default {
       this.queryInfo.pagenum = val
       this.getCategoryList()
     },
+
+    //删除分类
     async deleteCat(row) {
       const confirmRes = await this.$confirm(
         '此操作将删除该分类, 是否继续?',

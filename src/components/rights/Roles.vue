@@ -377,7 +377,7 @@ export default {
       }
       this.$message.success("更新权限成功")
       this.getRolesList()
-      this.$showRightDialogVisible=false
+      this.showRightDialogVisible=false
     },
 
     
